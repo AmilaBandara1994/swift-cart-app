@@ -18,15 +18,17 @@ const Cart = () => {
   return (
     <div className={css.card_container}>
        {
-                cartProducts.map((product) =>(
-                    <ProductCard 
-                    key={product.id} 
-                    button='Remove'
-                    product={product}
-                    clickHandler={removefromcart}
-                     />
-                ))
-            }
+            cartProducts.length > 0 ? (
+                    cartProducts.map((product) =>(
+                        <ProductCard 
+                        key={product.id} 
+                        button='Remove'
+                        product={product}
+                        clickHandler={removefromcart}
+                        />
+                    ))
+            ):( <h2> Cart Empty </h2>)
+        }
     </div>
   )
 }

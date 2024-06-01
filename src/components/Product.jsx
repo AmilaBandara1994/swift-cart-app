@@ -1,19 +1,18 @@
-import React,{useState, useEffect} from 'react'
+import React,{useEffect} from 'react'
 import ProductCard from './ProductCard';
 import css from './Product.module.css'
 import { add } from '../store/cartSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import  { getproducts }  from '../store/productSlice';
 
 const Product = () => {
     const dispatch = useDispatch();
-    const [products, setProducts] = useState([]);
+    const {data: products, status}= useSelector(state => state.products);
 
     useEffect(()=>{
-        //api
-        fetch('https://fakestoreapi.com/products')
-        .then(data => data.json())
-        .then(result => setProducts(result));
-    },[]);
+        // dispatch an action for get product;
+        dispatch(getproducts());
+    },[dispatch]);
 
     const addtocart = (product) => {
          dispatch(add(product));
@@ -23,13 +22,17 @@ const Product = () => {
     <>
         <div className={css.card_container} >
             {
+                status ===  'loading'  ? (
+                    <h2> Loading... </h2>
+                ):( 
                 products.map((product) =>(
                     <ProductCard 
                     key={product.id} 
                     product={product}
                     clickHandler={addtocart}
-                     />
-                ))
+                    />
+            
+            )))
             }
             
         </div>
