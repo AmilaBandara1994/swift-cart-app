@@ -1,8 +1,11 @@
 import React,{useState, useEffect} from 'react'
 import ProductCard from './ProductCard';
 import css from './Product.module.css'
+import { add } from '../store/cartSlice'
+import { useDispatch } from 'react-redux'
 
 const Product = () => {
+    const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
 
     useEffect(()=>{
@@ -12,6 +15,10 @@ const Product = () => {
         .then(result => setProducts(result));
     },[]);
 
+    const addtocart = (product) => {
+         dispatch(add(product));
+    }
+
   return (
     <>
         <div className={css.card_container} >
@@ -19,10 +26,8 @@ const Product = () => {
                 products.map((product) =>(
                     <ProductCard 
                     key={product.id} 
-                    title={product.title} 
-                    desc={product.description} 
-                    img={product.image} 
-                    price={product.price}
+                    product={product}
+                    clickHandler={addtocart}
                      />
                 ))
             }
